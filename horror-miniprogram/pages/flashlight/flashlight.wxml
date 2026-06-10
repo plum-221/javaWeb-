@@ -1,0 +1,48 @@
+<view class="flashlight-container" bindtouchmove="onTouchMove">
+  <!-- 完全黑暗的遮罩层 -->
+  <view class="darkness-overlay"></view>
+  
+  <!-- 手电筒光束效果 -->
+  <view 
+    class="flashlight-beam"
+    style="left: {{lightX}}px; top: {{lightY}}px;"
+  >
+    <view class="beam-center"></view>
+    <view class="beam-outer"></view>
+  </view>
+
+  <!-- 隐藏的物品/线索 -->
+  <view 
+    class="hidden-item {{isRevealed ? 'revealed' : ''}}"
+    style="left: {{itemX}}px; top: {{itemY}}px;"
+  >
+    <text class="item-icon">{{currentItem.icon}}</text>
+    <text class="item-text">{{currentItem.text}}</text>
+  </view>
+
+  <!-- 随机出现的恐怖元素 -->
+  <view 
+    class="scare-element {{showScareElement ? 'visible' : ''}}"
+    style="left: {{scareX}}px; top: {{scareY}}px;"
+  >
+    <text class="scare-icon">{{scareIcon}}</text>
+  </view>
+
+  <!-- 提示信息 -->
+  <view class="hint-box">
+    <text class="hint-text">{{hintText}}</text>
+  </view>
+
+  <!-- 电量显示 -->
+  <view class="battery-indicator">
+    <view class="battery-level" style="width: {{batteryLevel}}%"></view>
+    <text class="battery-text">{{batteryLevel}}%</text>
+  </view>
+
+  <!-- 开始提示 -->
+  <view class="start-hint {{gameStarted ? 'hidden' : ''}}" bindtap="startGame">
+    <text class="start-title">点击开始</text>
+    <text class="start-desc">在黑暗中寻找线索</text>
+    <text class="start-warning">⚠️ 可能包含突发惊吓</text>
+  </view>
+</view>

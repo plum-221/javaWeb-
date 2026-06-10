@@ -1,0 +1,47 @@
+<view class="container">
+  <view class="title-section">
+    <text class="title">深夜探险</text>
+    <text class="subtitle">戴上耳机，调暗屏幕</text>
+  </view>
+
+  <view class="warning-box" wx:if="{{showWarning}}">
+    <text class="warning-text">⚠️ 警告：本程序包含恐怖音效和突发画面</text>
+    <text class="warning-sub">心脏病、高血压患者请勿使用</text>
+  </view>
+
+  <view class="menu-section">
+    <view class="menu-item" bindtap="goToStory">
+      <text class="menu-icon">📖</text>
+      <text class="menu-title">恐怖故事</text>
+      <text class="menu-desc">沉浸式互动恐怖小说</text>
+    </view>
+
+    <view class="menu-item" bindtap="goToSound">
+      <text class="menu-icon">🎧</text>
+      <text class="menu-title">3D 恐怖音效</text>
+      <text class="menu-desc">环绕声恐怖体验</text>
+    </view>
+
+    <view class="menu-item" bindtap="goToFlashlight">
+      <text class="menu-icon">🔦</text>
+      <text class="menu-title">手电筒模式</text>
+      <text class="menu-desc">在黑暗中寻找真相</text>
+    </view>
+
+    <view class="menu-item" bindtap="startBreathTest">
+      <text class="menu-icon">👻</text>
+      <text class="menu-title">呼吸检测</text>
+      <text class="menu-desc">它能听到你的呼吸...</text>
+    </view>
+  </view>
+
+  <view class="footer">
+    <text class="footer-text">{{currentTime}}</text>
+    <text class="footer-hint">建议在全黑环境下体验</text>
+  </view>
+
+  <!-- 随机惊吓层 -->
+  <view class="scare-overlay {{showScare ? 'active' : ''}}" bindtap="hideScare">
+    <image class="scare-image" src="/images/scare.png" mode="aspectFill" />
+  </view>
+</view>

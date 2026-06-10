@@ -1,0 +1,48 @@
+<view class="story-container">
+  <view class="story-header">
+    <text class="chapter-title">{{currentChapter.title}}</text>
+    <text class="chapter-number">第{{currentChapterIndex + 1}}章</text>
+  </view>
+
+  <scroll-view class="story-content" scroll-y="{{true}}">
+    <view class="text-block {{isTyping ? 'typing' : ''}}">
+      {{displayedText}}
+    </view>
+    
+    <view class="cursor {{isTyping ? 'active' : ''}}"></view>
+  </scroll-view>
+
+  <view class="story-footer">
+    <view class="choice-section" wx:if="{{choices.length > 0 && !isTyping}}">
+      <text class="choice-prompt">你会怎么做？</text>
+      <view class="choices-list">
+        <view 
+          class="choice-item {{choice.disabled ? 'disabled' : ''}}" 
+          wx:for="{{choices}}" 
+          wx:key="index"
+          bindtap="selectChoice"
+          data-index="{{index}}"
+        >
+          <text class="choice-text">{{item.text}}</text>
+          <text class="choice-hint">{{item.hint}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="continue-btn" wx:elif="{{!isTyping && choices.length === 0 && hasNextChapter}}" bindtap="nextChapter">
+      <text>继续阅读</text>
+      <text class="arrow">→</text>
+    </view>
+
+    <view class="progress-bar">
+      <view class="progress-fill" style="width: {{progress}}%"></view>
+    </view>
+  </view>
+
+  <!-- 惊吓覆盖层 -->
+  <view class="jump-scare {{showJumpScare ? 'active' : ''}}">
+    <text class="scare-text">{{scareMessage}}</text>
+  </view>
+</view>
+
+</view>
