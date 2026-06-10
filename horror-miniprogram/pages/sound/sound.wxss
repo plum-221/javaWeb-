@@ -1,0 +1,232 @@
+.sound-container {
+  min-height: 100vh;
+  background: #050505;
+  padding: 40rpx;
+}
+
+/* 呼吸检测模式 */
+.breath-mode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+}
+
+.breath-visualizer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+  height: 300rpx;
+  margin-bottom: 60rpx;
+}
+
+.wave {
+  width: 20rpx;
+  height: 100rpx;
+  background: linear-gradient(180deg, #8b0000, #ff0000);
+  border-radius: 10rpx;
+  opacity: 0.3;
+  transform: scaleY(0.5);
+}
+
+.wave.active {
+  animation: waveAnimation 1s infinite ease-in-out;
+}
+
+@keyframes waveAnimation {
+  0%, 100% { 
+    transform: scaleY(0.5);
+    opacity: 0.3;
+  }
+  50% { 
+    transform: scaleY(2);
+    opacity: 1;
+  }
+}
+
+.breath-status {
+  font-size: 40rpx;
+  color: #8b0000;
+  margin-bottom: 20rpx;
+  text-align: center;
+}
+
+.breath-hint {
+  font-size: 26rpx;
+  color: #666;
+  text-align: center;
+}
+
+.breath-warning {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  background: rgba(139, 0, 0, 0.9);
+  border: 2rpx solid #ff0000;
+  border-radius: 20rpx;
+  padding: 40rpx 60rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20rpx;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 999;
+}
+
+.breath-warning.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.warning-icon {
+  font-size: 80rpx;
+}
+
+.warning-message {
+  font-size: 32rpx;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* 音效列表模式 */
+.sound-list-mode {
+  padding-bottom: 100rpx;
+}
+
+.sound-category {
+  margin-bottom: 50rpx;
+}
+
+.category-title {
+  font-size: 32rpx;
+  color: #8b0000;
+  display: block;
+  margin-bottom: 20rpx;
+  font-weight: bold;
+}
+
+.sound-items {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.sound-item {
+  background: linear-gradient(135deg, rgba(30, 30, 30, 0.9) 0%, rgba(20, 20, 20, 0.9) 100%);
+  border: 1rpx solid #333;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.sound-item:active {
+  background: rgba(139, 0, 0, 0.2);
+  border-color: #8b0000;
+}
+
+.sound-item.playing {
+  border-color: #ff0000;
+  box-shadow: 0 0 20rpx rgba(255, 0, 0, 0.3);
+}
+
+.sound-item.playing::before {
+  content: '🔊';
+  position: absolute;
+  right: 20rpx;
+  font-size: 30rpx;
+}
+
+.sound-icon {
+  font-size: 50rpx;
+  flex-shrink: 0;
+}
+
+.sound-name {
+  font-size: 30rpx;
+  color: #e0e0e0;
+  flex: 1;
+  font-weight: bold;
+}
+
+.sound-duration {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.control-panel {
+  background: rgba(30, 30, 30, 0.9);
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-top: 40rpx;
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  margin-bottom: 30rpx;
+}
+
+.volume-label {
+  font-size: 28rpx;
+  color: #999;
+  width: 80rpx;
+}
+
+slider {
+  flex: 1;
+}
+
+.random-play {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+  padding: 20rpx;
+  border: 1rpx solid #333;
+  border-radius: 50rpx;
+}
+
+.random-icon {
+  font-size: 40rpx;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+.random-icon.active {
+  opacity: 1;
+  color: #8b0000;
+}
+
+.random-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.back-btn {
+  position: fixed;
+  bottom: 40rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #8b0000 0%, #5c0000 100%);
+  border-radius: 50rpx;
+  padding: 25rpx 80rpx;
+  text-align: center;
+}
+
+.back-btn text {
+  font-size: 30rpx;
+  color: #fff;
+  font-weight: bold;
+}

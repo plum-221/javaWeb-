@@ -1,0 +1,20 @@
+```
+# Mini-program specific
+miniprogram_npm/
+node_modules/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+.env.*
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+```

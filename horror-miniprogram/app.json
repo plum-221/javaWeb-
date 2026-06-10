@@ -1,0 +1,23 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/story/story",
+    "pages/sound/sound",
+    "pages/flashlight/flashlight"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#000000",
+    "navigationBarTitleText": "恐怖体验",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#000000"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "permission": {
+    "scope.record": {
+      "desc": "用于录音检测您的呼吸声"
+    }
+  },
+  "requiredBackgroundModes": ["audio"]
+}

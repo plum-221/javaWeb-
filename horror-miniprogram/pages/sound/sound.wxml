@@ -1,0 +1,131 @@
+<view class="sound-container">
+  <!-- 呼吸检测模式 -->
+  <view wx:if="{{mode === 'breath'}}" class="breath-mode">
+    <view class="breath-visualizer">
+      <view class="wave {{isListening ? 'active' : ''}}" style="animation-delay: 0s"></view>
+      <view class="wave {{isListening ? 'active' : ''}}" style="animation-delay: 0.1s"></view>
+      <view class="wave {{isListening ? 'active' : ''}}" style="animation-delay: 0.2s"></view>
+      <view class="wave {{isListening ? 'active' : ''}}" style="animation-delay: 0.3s"></view>
+      <view class="wave {{isListening ? 'active' : ''}}" style="animation-delay: 0.4s"></view>
+    </view>
+
+    <text class="breath-status">{{breathStatus}}</text>
+    <text class="breath-hint">正在监听您的呼吸...</text>
+
+    <view class="breath-warning {{showBreathWarning ? 'active' : ''}}">
+      <text class="warning-icon">⚠️</text>
+      <text class="warning-message">你的呼吸变得急促了...</text>
+    </view>
+  </view>
+
+  <!-- 音效选择模式 -->
+  <view wx:else class="sound-list-mode">
+    <view class="sound-category">
+      <text class="category-title">环境音效</text>
+      <view class="sound-items">
+        <view 
+          class="sound-item {{playingSound === 'rain' ? 'playing' : ''}}"
+          bindtap="playSound"
+          data-sound="rain"
+        >
+          <text class="sound-icon">🌧️</text>
+          <text class="sound-name">阴森雨夜</text>
+          <text class="sound-duration">循环</text>
+        </view>
+
+        <view 
+          class="sound-item {{playingSound === 'wind' ? 'playing' : ''}}"
+          bindtap="playSound"
+          data-sound="wind"
+        >
+          <text class="sound-icon">💨</text>
+          <text class="sound-name">诡异风声</text>
+          <text class="sound-duration">循环</text>
+        </view>
+
+        <view 
+          class="sound-item {{playingSound === 'creak' ? 'playing' : ''}}"
+          bindtap="playSound"
+          data-sound="creak"
+        >
+          <text class="sound-icon">🚪</text>
+          <text class="sound-name">吱呀门声</text>
+          <text class="sound-duration">3 秒</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="sound-category">
+      <text class="category-title">恐怖人声</text>
+      <view class="sound-items">
+        <view 
+          class="sound-item {{playingSound === 'whisper' ? 'playing' : ''}}"
+          bindtap="playSound"
+          data-sound="whisper"
+        >
+          <text class="sound-icon">👂</text>
+          <text class="sound-name">耳语低吟</text>
+          <text class="sound-duration">5 秒</text>
+        </view>
+
+        <view 
+          class="sound-item {{playingSound === 'laugh' ? 'playing' : ''}}"
+          bindtap="playSound"
+          data-sound="laugh"
+        >
+          <text class="sound-icon">😈</text>
+          <text class="sound-name">诡异笑声</text>
+          <text class="sound-duration">2 秒</text>
+        </view>
+
+        <view 
+          class="sound-item {{playingSound === 'scream' ? 'playing' : ''}}"
+          bindtap="playSound"
+          data-sound="scream"
+        >
+          <text class="sound-icon">😱</text>
+          <text class="sound-name">凄厉尖叫</text>
+          <text class="sound-duration">1 秒</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="sound-category">
+      <text class="category-title">突发惊吓</text>
+      <view class="sound-items">
+        <view 
+          class="sound-item {{playingSound === 'jumpscare' ? 'playing' : ''}}"
+          bindtap="playSound"
+          data-sound="jumpscare"
+        >
+          <text class="sound-icon">💀</text>
+          <text class="sound-name">突然惊吓</text>
+          <text class="sound-duration">瞬间</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="control-panel">
+      <view class="volume-control">
+        <text class="volume-label">音量</text>
+        <slider 
+          value="{{volume}}" 
+          bindchange="onVolumeChange"
+          min="0"
+          max="100"
+          activeColor="#8b0000"
+          backgroundColor="#333"
+        />
+      </view>
+
+      <view class="random-play" bindtap="toggleRandomPlay">
+        <text class="random-icon {{randomPlay ? 'active' : ''}}">🔀</text>
+        <text class="random-text">{{randomPlay ? '随机播放中' : '随机播放'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="back-btn" bindtap="goBack">
+    <text>返回</text>
+  </view>
+</view>
