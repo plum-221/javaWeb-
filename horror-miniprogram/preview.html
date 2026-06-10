@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>恐怖小程序 - 视觉预览</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; 
+            color: #d00; 
+            font-family: 'Courier New', monospace; 
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 核心动画定义 */
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            5% { opacity: 0.8; }
+            10% { opacity: 1; }
+            15% { opacity: 0.3; }
+            20% { opacity: 1; }
+            50% { opacity: 0.9; }
+            55% { opacity: 0.1; }
+            60% { opacity: 1; }
+        }
+
+        @keyframes pulse-red {
+            0%, 100% { box-shadow: 0 0 10px #d00, 0 0 20px #d00; transform: scale(1); }
+            50% { box-shadow: 0 0 30px #f00, 0 0 50px #f00; transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10% { transform: translateX(-10px) rotate(-5deg); }
+            20% { transform: translateX(10px) rotate(5deg); }
+            30% { transform: translateX(-10px) rotate(-5deg); }
+            40% { transform: translateX(10px) rotate(5deg); }
+            50% { transform: translateX(-10px) rotate(-5deg); }
+            60% { transform: translateX(10px) rotate(5deg); }
+            70% { transform: translateX(-10px) rotate(-5deg); }
+            80% { transform: translateX(10px) rotate(5deg); }
+            90% { transform: translateX(-10px) rotate(-5deg); }
+        }
+
+        @keyframes text-glitch {
+            0% { text-shadow: 2px 0 #f00, -2px 0 #0ff; }
+            25% { text-shadow: -2px 0 #f00, 2px 0 #0ff; }
+            50% { text-shadow: 2px 0 #0ff, -2px 0 #f00; }
+            75% { text-shadow: -2px 0 #0ff, 2px 0 #f00; }
+            100% { text-shadow: 2px 0 #f00, -2px 0 #0ff; }
+        }
+
+        /* 主容器 */
+        .container {
+            position: relative;
+            width: 375px;
+            height: 667px;
+            background: #050505;
+            border: 2px solid #333;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(221, 0, 0, 0.2);
+        }
+
+        /* 顶部导航 */
+        .nav {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(180deg, #1a0000 0%, transparent 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .nav h1 {
+            font-size: 24px;
+            letter-spacing: 5px;
+            animation: text-glitch 2s infinite;
+            text-transform: uppercase;
+        }
+
+        /* 内容区域 */
+        .content {
+            position: absolute;
+            top: 60px;
+            width: 100%;
+            height: calc(100% - 60px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* 功能按钮 */
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 80%;
+        }
+
+        .btn {
+            padding: 20px;
+            background: #111;
+            border: 1px solid #d00;
+            color: #d00;
+            font-size: 18px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            background: #d00;
+            color: #000;
+            animation: pulse-red 0.5s;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,0,0,0.3), transparent);
+            transform: rotate(45deg);
+            animation: flicker 3s infinite;
+        }
+
+        /* 惊吓覆盖层 */
+        .scare-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .scare-face {
+            font-size: 150px;
+            animation: shake 0.5s infinite;
+        }
+
+        .scare-text {
+            position: absolute;
+            bottom: 100px;
+            font-size: 40px;
+            color: #f00;
+            text-shadow: 0 0 20px #f00;
+            animation: text-glitch 0.2s infinite;
+        }
+
+        /* 手电筒效果 */
+        .flashlight-mode {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: none;
+            z-index: 50;
+            cursor: none;
+        }
+
+        .flashlight-beam {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.2) 40%, transparent 70%);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            filter: blur(10px);
+        }
+
+        .hidden-object {
+            position: absolute;
+            font-size: 60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .hidden-object.visible {
+            opacity: 1;
+        }
+
+        /* 底部提示 */
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            animation: flicker 4s infinite;
+        }
+
+        /* 控制按钮 */
+        .controls {
+            position: absolute;
+            right: -150px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .control-btn {
+            padding: 10px 15px;
+            background: #222;
+            border: 1px solid #444;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .control-btn:hover {
+            background: #d00;
+            color: #000;
+        }
+
+        /* 血滴效果 */
+        .blood-drop {
+            position: absolute;
+            width: 10px;
+            height: 30px;
+            background: linear-gradient(180deg, #d00 0%, #500 100%);
+            border-radius: 0 0 10px 10px;
+            animation: drip 2s infinite;
+        }
+
+        @keyframes drip {
+            0% { transform: translateY(-100px); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(700px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="phone">
+        <!-- 血滴背景 -->
+        <div class="blood-drop" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="blood-drop" style="left: 30%; animation-delay: 1.5s;"></div>
+        <div class="blood-drop" style="left: 70%; animation-delay: 0.8s;"></div>
+        <div class="blood-drop" style="left: 90%; animation-delay: 2.2s;"></div>
+
+        <!-- 导航 -->
+        <div class="nav">
+            <h1>⚠️ 恐 怖 空 间 ⚠️</h1>
+        </div>
+
+        <!-- 内容 -->
+        <div class="content">
+            <div class="btn-group">
+                <div class="btn" onclick="triggerScare()">👻 随机惊吓</div>
+                <div class="btn" onclick="toggleFlashlight()">🔦 手电筒模式</div>
+                <div class="btn" onclick="playSoundEffect()">🎧 恐怖音效</div>
+                <div class="btn" onclick="showStory()">📖 恐怖故事</div>
+            </div>
+        </div>
+
+        <!-- 惊吓覆盖层 -->
+        <div class="scare-overlay" id="scareOverlay">
+            <div class="scare-face">👹</div>
+            <div class="scare-text">它 在 看 着 你</div>
+        </div>
+
+        <!-- 手电筒模式 -->
+        <div class="flashlight-mode" id="flashlightMode">
+            <div class="flashlight-beam" id="flashlightBeam"></div>
+            <div class="hidden-object" style="top: 30%; left: 20%;">💀</div>
+            <div class="hidden-object" style="top: 50%; left: 60%;">👁️</div>
+            <div class="hidden-object" style="top: 70%; left: 40%;">🩸</div>
+            <div style="position: absolute; bottom: 20px; left: 20px; color: #666; font-size: 12px;">移动鼠标控制光束 • 找到隐藏物品</div>
+        </div>
+
+        <!-- 底部 -->
+        <div class="footer">
+            戴上耳机体验更佳 • 建议在黑暗环境中使用
+        </div>
+    </div>
+
+    <!-- 控制面板 -->
+    <div class="controls">
+        <button class="control-btn" onclick="startAutoScare()">自动惊吓演示</button>
+        <button class="control-btn" onclick="stopAutoScare()">停止演示</button>
+        <button class="control-btn" onclick="toggleGlitch()">切换故障效果</button>
+    </div>
+
+    <script>
+        let autoScareInterval = null;
+        let glitchEnabled = true;
+
+        // 触发惊吓
+        function triggerScare() {
+            const overlay = document.getElementById('scareOverlay');
+            overlay.style.display = 'flex';
+            
+            // 震动效果（如果支持）
+            if (navigator.vibrate) {
+                navigator.vibrate([200, 100, 200, 100, 500]);
+            }
+
+            // 随机变化表情
+            const faces = ['👹', '💀', '👻', '😱', '👽'];
+            const face = overlay.querySelector('.scare-face');
+            face.textContent = faces[Math.floor(Math.random() * faces.length)];
+
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 1500);
+        }
+
+        // 手电筒模式
+        function toggleFlashlight() {
+            const mode = document.getElementById('flashlightMode');
+            const beam = document.getElementById('flashlightBeam');
+            
+            if (mode.style.display === 'block') {
+                mode.style.display = 'none';
+                document.body.style.cursor = 'default';
+            } else {
+                mode.style.display = 'block';
+                document.body.style.cursor = 'none';
+                
+                // 鼠标移动控制光束
+                mode.addEventListener('mousemove', (e) => {
+                    const rect = mode.getBoundingClientRect();
+                    beam.style.left = (e.clientX - rect.left) + 'px';
+                    beam.style.top = (e.clientY - rect.top) + 'px';
+                    
+                    // 检测是否照到隐藏物品
+                    document.querySelectorAll('.hidden-object').forEach(obj => {
+                        const objRect = obj.getBoundingClientRect();
+                        const beamRect = beam.getBoundingClientRect();
+                        
+                        if (
+                            beamRect.left < objRect.right &&
+                            beamRect.right > objRect.left &&
+                            beamRect.top < objRect.bottom &&
+                            beamRect.bottom > objRect.top
+                        ) {
+                            obj.classList.add('visible');
+                        } else {
+                            obj.classList.remove('visible');
+                        }
+                    });
+                });
+            }
+        }
+
+        // 音效模拟
+        function playSoundEffect() {
+            alert('🎧 音效提示：\n\n此处将播放 3D 环绕恐怖音效\n包括：风声、低语、心跳声、突然的尖叫\n\n（实际小程序中需添加 audio 文件）');
+        }
+
+        // 故事模式
+        function showStory() {
+            const storyText = "📖 深夜，你独自在家...\n\n突然听到楼上有脚步声\n但你明明是一个人住...\n\n脚步声越来越近\n就在你的房门外停下\n\n门把手开始转动...\n\n【点击继续】";
+            alert(storyText);
+        }
+
+        // 自动惊吓演示
+        function startAutoScare() {
+            if (autoScareInterval) return;
+            
+            triggerScare();
+            autoScareInterval = setInterval(() => {
+                triggerScare();
+            }, 3000 + Math.random() * 2000);
+        }
+
+        function stopAutoScare() {
+            if (autoScareInterval) {
+                clearInterval(autoScareInterval);
+                autoScareInterval = null;
+            }
+        }
+
+        // 切换故障效果
+        function toggleGlitch() {
+            glitchEnabled = !glitchEnabled;
+            const nav = document.querySelector('.nav h1');
+            if (glitchEnabled) {
+                nav.style.animation = 'text-glitch 2s infinite';
+            } else {
+                nav.style.animation = 'none';
+            }
+        }
+
+        // 初始化：随机触发一次惊吓
+        setTimeout(() => {
+            if (Math.random() > 0.7) {
+                triggerScare();
+            }
+        }, 2000);
+    </script>
+</body>
+</html>

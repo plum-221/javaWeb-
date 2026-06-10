@@ -1,20 +1,33 @@
 ```
-# Mini-program specific
-miniprogram_npm/
-node_modules/
+# Build artifacts
+dist/
+build/
+*.min.js
+*.bundle.js
+*.map
 
-# Logs
-*.log
+# Dependencies
+node_modules/
 
 # Environment
 .env
 .env.local
 .env.*
 
-# Dependencies
-node_modules/
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
 
-# Build outputs
-dist/
-build/
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
 ```
